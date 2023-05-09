@@ -84,7 +84,7 @@ jobs:
           git init
           git add .
           git commit -m "Add cookiecutter template"
-          gh repo create marvelousmlops/${{ inputs.repo_name }} --source=. --private --remote=origin --push
+          gh repo create marvelousmlops/${{ inputs.repo_name }} --source=. --public --remote=origin --push
 
       - name: Add user to ${{ inputs.repo_name }}
         shell: bash
