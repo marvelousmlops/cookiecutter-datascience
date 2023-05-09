@@ -5,8 +5,8 @@ We keep the cookie cutter as simple as possible with focus on production and not
 
 ## How to use
 - Go to workflows, run `Create Repo` workflow by providing the following inputs:
-    - Repo name: Name of the repository you want to create. (must follow naming convention, starts with opco name e.g. maxi, dll, alfa-beta
-    - Product name: Name of the data science product, e.g. personalized-offers, topn, search.
+    - Repo name: Name of the repository you want to create
+    - Product name: Name of the data science product.
     - Operation team: Name of the team who owns the product, e.g. Data Science, MLOps.
 
 ## What it does
