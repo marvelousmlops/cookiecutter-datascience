@@ -22,4 +22,4 @@ We keep the cookie cutter as simple as possible with focus on production and not
     ├── .flake8                <- Configuration for flake8
     ├── pytest.ini             <- Pytest settings
     └── .github/workflows
-        ├── CI.yml             <- Continues Integration to run tests and precommit
+        ├── CI.yml             <- CI to run tests and precommit
