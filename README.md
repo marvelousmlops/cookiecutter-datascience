@@ -7,7 +7,7 @@ We keep the cookie cutter as simple as possible with focus on production and not
 - Go to workflows, run `Create Repo` workflow by providing the following inputs:
     - Repo name: Name of the repository you want to create. (must follow naming convention, starts with opco name e.g. maxi, dll, alfa-beta
     - Product name: Name of the data science product, e.g. personalized-offers, topn, search.
-    - Operation team: Name of the team who owns the product, e.g. DRS, DLL.
+    - Operation team: Name of the team who owns the product, e.g. Data Science, MLOps.
 
 ## What it does
 - `Create Repo` creates a repository with provided repo name, runs cookiecutter to render files, adds and commits them to the new repository. 
