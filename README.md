@@ -1,6 +1,7 @@
 # Data Science Project Template
 
 A simple project structure for data scientists to begin a new project. It provides necessary files.
+We keep the cookie cutter as simple as possible with focus on production and not development.
 
 ## How to use
 - Go to workflows, run `Create Repo` workflow by providing the following inputs:
