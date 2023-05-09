@@ -89,4 +89,4 @@ jobs:
       - name: Add user to ${{ inputs.repo_name }}
         shell: bash
         run: | 
-          gh api --method=PUT "repos/RoyalAholdDelhaize/${{ inputs.repo_name }}/collaborators/${{ github.actor }}" -f permission=admin
+          gh api --method=PUT "repos/marvelousmlops/${{ inputs.repo_name }}/collaborators/${{ github.actor }}" -f permission=admin
