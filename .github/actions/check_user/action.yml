@@ -1,4 +1,4 @@
-name: Check user team and repo name
+name: Check user team and repository name
 description: >
   Check if the user is part of the team
 inputs:
