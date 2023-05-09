@@ -1,7 +1,6 @@
 <h1 align="center">
-<img src="https://upload.wikimedia.org/wikipedia/en/c/c8/Ahold_Delhaize_logo.svg" width="224px"/><br/>
-Ahold Delhaize
-
+Marvelous MLOps
+    
 [_Project name_]
 
 </h1>
