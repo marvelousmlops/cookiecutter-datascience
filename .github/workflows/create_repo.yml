@@ -11,7 +11,7 @@ on:
         required: true
         default: ''
       operation_team: 
-        description: 'Operation team, eg. DRS, DLL'
+        description: 'Operation team, eg. MLOps, Data Science'
         required: true
         default: ''
       
