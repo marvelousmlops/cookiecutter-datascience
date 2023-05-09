@@ -1,0 +1,9 @@
+{
+    "repo_name": "{{ repo_name }}",
+    "product_name": "{{ product_name }}",
+    "operation_team": "{{ operation_team }}",
+    "code_owners": "{{ code_owners }}",
+    "_copy_without_render": [
+        "databricks_job.json.j2", "cluster.json.j2", ".github/workflows"
+    ]
+}

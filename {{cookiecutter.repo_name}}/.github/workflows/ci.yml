@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.GSO_APP_ID }}
+          private_key: ${{ secrets.GSO_APP_PRIVATE_KEY }}
+
+      - name: Install dependencies
+        env:
+          GIT_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pre-commit checks
+        run: |
+          pre-commit run --all-files
