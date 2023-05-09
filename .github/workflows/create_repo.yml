@@ -1,0 +1,92 @@
+name: Create Repo
+on: 
+  workflow_dispatch:
+    inputs:
+      repo_name: 
+        description: 'Name of the repository to be created'
+        required: true
+        default: ''
+      product_name: 
+        description: 'Name of the product, eg. topn, search'
+        required: true
+        default: ''
+      operation_team: 
+        description: 'Operation team, eg. DRS, DLL'
+        required: true
+        default: ''
+      
+
+jobs:
+  create-repository:
+    runs-on: ubuntu-20.04
+    name: Creating Organization Repository
+    steps:
+    
+      - name: Echo inputs
+        id: echo_inputs
+        run: |
+          echo "Repo name: ${{ inputs.repo_name }}"
+          echo "Product_name: ${{ inputs.product_name }}"
+          echo "Operation team: ${{ inputs.operation_team }}"
+          echo "Who triggered the workflow: ${{ github.actor }}"
+
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          
+      - name: Setup git token
+        id: setup_git_token
+        shell: bash
+        run: |
+          echo "GITHUB_TOKEN=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
+
+      - name: Checkout the project repo
+        id: checkout_repo
+        uses: actions/checkout@v3
+    
+      - name: Check user team and repo name
+        uses: ./.github/actions/check_user
+        id: check_user
+        with:
+          user: ${{ github.actor }}
+          repo_name: ${{ inputs.repo_name }}
+
+      - name: Install dependencies
+        run: |
+          pip install jinja2-cli==0.8.2
+          pip install cookiecutter==2.1.1
+        shell: bash
+      
+      - name: Render cookiecutter.json
+        env:
+          TEAM_NAME: ${{ steps.check_user.outputs.team_name }}
+        run: |
+          jinja2 cookiecutter_tmpl.json \
+           -D "repo_name=${{ inputs.repo_name }}" \
+           -D "product_name=${{ inputs.product_name }}" \
+           -D "operation_team=${{ inputs.operation_team }}" \
+           -D "code_owners=@${{ env.TEAM_NAME }}" \
+            > cookiecutter.json
+          cat cookiecutter.json
+
+      - name: Run cookiecutter
+        run: |
+          cookiecutter . --no-input
+
+      - name: Push to repo
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com" && \
+          git config --global user.name "github-actions[bot]" && \
+          cd ./${{ inputs.repo_name }}
+          git init
+          git add .
+          git commit -m "Add cookiecutter template"
+          gh repo create RoyalAholdDelhaize/${{ inputs.repo_name }} --internal --source=. --remote=origin --push
+
+      - name: Add user to ${{ inputs.repo_name }}
+        shell: bash
+        run: | 
+          gh api --method=PUT "repos/RoyalAholdDelhaize/${{ inputs.repo_name }}/collaborators/${{ github.actor }}" -f permission=admin

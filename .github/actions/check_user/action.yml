@@ -1,0 +1,47 @@
+name: Check user team and repo name
+description: >
+  Check if the user is part of the team
+inputs:
+  user:
+    description: 'User to check'
+    required: true
+  repo_name:
+    description: 'Repository name'
+    required: true
+
+outputs:
+  team_name: # possible outputs: gso-mle, dll-danda-mlopsengineers, acz-ds
+    description: Team name in GitHub
+    value: ${{ steps.check_team_and_repo.outputs.team_name }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check user for team ml-engineers
+      uses: tspascoal/get-user-teams-membership@v2
+      id: mlengineers
+      with:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+        username: ${{ github.actor }}
+        team: "ml-engineers"
+    
+    - name: Check user for team data-scientists
+      uses: tspascoal/get-user-teams-membership@v2
+      id: datascientists
+      with:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+        username: ${{ github.actor }}
+        team: "data-scientists"
+
+    - name: Check if team membership and repo name match
+      id: check_team_and_repo
+      shell: bash
+      run: |
+        if [[ "${{ steps.mlengineers.outputs.isTeamMember }}" == "true" ]]; then \
+          (team="marvelousmlops/ml-engineers"; echo "team_name=$team" >> $GITHUB_OUTPUT; echo "user belongs to $team";);
+        elif [[ "${{ inputs.repo_name }}" == *"ds-"* && "${{ steps.datascientists.outputs.isTeamMember }}" == "true" ]]; then \
+          (team="marvelousmlops/data-scientists"; echo "team_name=$team" >> $GITHUB_OUTPUT; echo "user belongs to $team";);
+        else 
+          echo "user is not a member of expected team to create repo with given name"
+          exit 1
+        fi
