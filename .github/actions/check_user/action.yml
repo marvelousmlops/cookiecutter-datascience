@@ -10,7 +10,7 @@ inputs:
     required: true
 
 outputs:
-  team_name: # possible outputs: gso-mle, dll-danda-mlopsengineers, acz-ds
+  team_name:
     description: Team name in GitHub
     value: ${{ steps.check_team_and_repo.outputs.team_name }}
 
